@@ -1,0 +1,53 @@
+{
+  "$schema": "https://cloud.google.com/backup-disaster-recovery/schemas/v1/policy.json",
+  "name": "projects/metashield-enclave-prod/locations/global/backupPlans/metashield-compliance-dr-plan",
+  "description": "Google Cloud Backup and DR Policy for MetaShield Immutable SQLite Ledger and Compliance Archives",
+  "institution": "Malla Reddy University",
+  "architects": [
+    "Charan Konda (2511CS040113)",
+    "J. Naga Phani (2511CS040132)"
+  ],
+  "batch": "CS BETA - 17",
+  "backupRules": [
+    {
+      "ruleId": "hourly-sqlite-ledger-snapshot",
+      "backupSchedule": {
+        "recurrenceType": "HOURLY",
+        "hourlySchedule": {
+          "interval": 1
+        },
+        "timeZone": "Asia/Kolkata"
+      },
+      "retentionPolicy": {
+        "retentionPeriod": {
+          "duration": "2592000s"
+        },
+        "immutableRetention": true,
+        "complianceLock": "ENABLED"
+      }
+    },
+    {
+      "ruleId": "daily-cross-region-dr-replication",
+      "backupSchedule": {
+        "recurrenceType": "DAILY",
+        "dailySchedule": {
+          "hourOfDay": 2,
+          "minuteOfHour": 0
+        },
+        "timeZone": "Asia/Kolkata"
+      },
+      "retentionPolicy": {
+        "retentionPeriod": {
+          "duration": "31536000s"
+        },
+        "immutableRetention": true
+      },
+      "secondaryLocation": "asia-southeast1"
+    }
+  ],
+  "complianceAssertions": {
+    "iso27001_control": "A.12.3 Information Backup & Immutable Storage",
+    "gdpr_article": "Art. 32 Security of Processing (Restoration & Resilience)",
+    "hipaa_rule": "45 CFR 164.308(a)(7) Contingency Plan"
+  }
+}

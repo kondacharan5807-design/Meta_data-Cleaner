@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MetaShield Enclave — Privacy & Metadata Security Engine</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#262a33",
+            "inverse-primary": "#00687a",
+            "primary": "#4cd7f6",
+            "tertiary": "#ffb95f",
+            "surface-bright": "#353942",
+            "tertiary-container": "#e79400",
+            "on-error": "#690005",
+            "on-secondary": "#003824",
+            "on-tertiary-fixed": "#2a1700",
+            "secondary-fixed-dim": "#4edea3",
+            "surface-container-highest": "#31353e",
+            "outline": "#869397",
+            "secondary-container": "#00a572",
+            "background": "#0f131c",
+            "surface-tint": "#4cd7f6",
+            "on-secondary-container": "#00311f",
+            "error": "#ffb4ab",
+            "on-primary-container": "#00424f",
+            "on-primary-fixed-variant": "#004e5c",
+            "on-secondary-fixed-variant": "#005236",
+            "primary-fixed": "#acedff",
+            "on-tertiary-container": "#563400",
+            "on-secondary-fixed": "#002113",
+            "on-primary": "#003640",
+            "on-surface": "#dfe2ee",
+            "primary-container": "#06b6d4",
+            "error-container": "#93000a",
+            "inverse-on-surface": "#2c3039",
+            "inverse-surface": "#dfe2ee",
+            "on-surface-variant": "#bcc9cd",
+            "on-tertiary": "#472a00",
+            "tertiary-fixed": "#ffddb8",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-error-container": "#ffdad6",
+            "surface-container": "#1c2028",
+            "outline-variant": "#3d494c",
+            "surface-variant": "#31353e",
+            "tertiary-fixed-dim": "#ffb95f",
+            "surface": "#0f131c",
+            "on-background": "#dfe2ee",
+            "secondary-fixed": "#6ffbbe",
+            "surface-container-lowest": "#0a0e16",
+            "primary-fixed-dim": "#4cd7f6",
+            "secondary": "#4edea3",
+            "on-primary-fixed": "#001f26",
+            "surface-dim": "#0f131c",
+            "surface-container-low": "#181c24"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "gutter-lg": "1.5rem",
+            "space-xl": "1.5rem",
+            "margin-md": "1.5rem",
+            "space-lg": "1rem",
+            "space-md": "0.75rem",
+            "gutter": "1rem",
+            "margin-lg": "2rem"
+          },
+          "fontFamily": {
+            "label-sm": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "headline-lg-mobile": ["Inter"],
+            "display": ["Inter"],
+            "label-md": ["JetBrains Mono"],
+            "code-md": ["JetBrains Mono"],
+            "headline-lg": ["Inter"],
+            "headline-sm": ["Inter"],
+            "code-lg": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.06em", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "code-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "code-md": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "code-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .grid-mesh {
+      background-size: 28px 28px;
+      background-image: 
+        linear-gradient(to right, rgba(61, 73, 76, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(61, 73, 76, 0.12) 1px, transparent 1px);
+    }
+    .cyan-glow-box {
+      box-shadow: 0 0 16px -2px rgba(6, 182, 212, 0.25);
+    }
+    .amber-glow-box {
+      box-shadow: 0 0 20px -2px rgba(231, 148, 0, 0.3);
+    }
+    .terminal-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .terminal-scrollbar::-webkit-scrollbar-track {
+      background: #0a0e16;
+    }
+    .terminal-scrollbar::-webkit-scrollbar-thumb {
+      background: #3d494c;
+      border-radius: 2px;
+    }
+    .terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #4cd7f6;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen grid-mesh antialiased flex flex-col">
+<!-- TOP APP BAR -->
+<header class="w-full px-margin-lg h-14 flex items-center justify-between bg-surface-container-low border-b border-outline-variant docked full-width top-0 z-50 sticky">
+<!-- Brand / Enclave Core Identification -->
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-xs font-headline-sm text-headline-sm font-bold tracking-tight text-primary">
+<span class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+<span>MetaShield</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant hidden sm:block"></div>
+<!-- Security Enclave Chip -->
+<div class="hidden sm:flex items-center gap-space-xs px-space-sm py-[2px] bg-surface-container border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-secondary">● ENCLAVE ACTIVE (AES-GCM-256)</span>
+</div>
+<!-- Academic Attribution Badge -->
+<div class="hidden xl:flex items-center gap-space-xs px-space-md py-[3px] bg-surface-container-lowest border border-outline-variant">
+<span class="material-symbols-outlined text-tertiary text-[14px]">school</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Malla Reddy University</span>
+<span class="text-outline-variant font-label-sm text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-on-surface">Charan Konda & J. Naga Phani (Batch CS BETA - 17)</span>
+</div>
+</div>
+<!-- Center Nav Anchors (Desktop) -->
+<nav class="hidden lg:flex items-center gap-space-lg h-full">
+<a class="text-primary border-b-2 border-primary font-label-md py-4 transition-colors flex items-center gap-1" href="#dashboard">
+<span class="material-symbols-outlined text-[15px]">dashboard</span>
+        Dashboard
+      </a>
+<a class="text-on-surface-variant font-label-md hover:text-on-surface py-4 transition-colors" href="#inspector">
+        Metadata Inspector
+      </a>
+<a class="text-on-surface-variant font-label-md hover:text-on-surface py-4 transition-colors" href="#wipe">
+        Selective Wipe
+      </a>
+<a class="text-on-surface-variant font-label-md hover:text-on-surface py-4 transition-colors" href="#ledger">
+        Audit Ledger
+      </a>
+<a class="text-on-surface-variant font-label-md hover:text-on-surface py-4 transition-colors" href="#compliance">
+        Compliance
+      </a>
+</nav>
+<!-- Trailing Action Controls -->
+<div class="flex items-center gap-space-md">
+<!-- Batch Queue Status Chip -->
+<div class="hidden md:flex items-center gap-space-xs px-space-sm py-[2px] bg-surface-container-high border border-outline-variant font-code-sm text-code-sm text-primary">
+<span class="material-symbols-outlined text-[14px]">inventory_2</span>
+<span>Batch Queue: 12 Files (48.2 MB)</span>
+</div>
+<!-- Export Certification Primary Cyber CTA -->
+<button class="flex items-center gap-space-xs bg-primary-container hover:bg-primary text-on-primary-container font-label-md text-label-md px-space-md py-[6px] transition-colors cyan-glow-box">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span>Export Certification</span>
+</button>
+<!-- Terminal / Operator Icon Actions -->
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<button class="p-space-xs hover:bg-surface-container-high hover:text-primary transition-colors" title="System Terminal Console">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+</button>
+<button class="p-space-xs hover:bg-surface-container-high hover:text-primary transition-colors" title="Alerts & Notifications">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+</button>
+<button class="p-space-xs hover:bg-surface-container-high hover:text-primary transition-colors" title="Security Operator Profile">
+<span class="material-symbols-outlined text-[18px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN VIEWPORT GRID -->
+<div class="flex-1 flex w-full">
+<!-- SIDE TELEMETRY RAIL (Shared SideNavBar Implementation) -->
+<aside class="hidden 2xl:flex flex-col justify-between w-64 bg-surface-container-lowest border-r border-outline-variant p-space-md shrink-0">
+<div>
+<div class="pb-space-md border-b border-outline-variant mb-space-md">
+<div class="flex items-center gap-space-xs text-on-surface font-headline-sm text-headline-sm font-bold">
+<span class="material-symbols-outlined text-primary text-[18px]">shield</span>
+<span>MetaShield Enclave</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">
+            MRU | Batch CS BETA-17
+          </div>
+</div>
+<!-- Action CTA -->
+<button class="w-full flex items-center justify-center gap-space-xs py-space-sm bg-surface-container-high hover:bg-surface-bright text-primary border border-outline-variant font-label-sm text-label-sm transition-colors mb-space-lg">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>New Batch Scrub</span>
+</button>
+<!-- Navigation Links -->
+<div class="space-y-1">
+<a class="flex items-center gap-space-sm px-space-md py-space-sm bg-surface-container-high text-primary border-l-2 border-primary font-label-sm text-label-sm rounded-none" href="#">
+<span class="material-symbols-outlined text-[16px]">shield</span>
+<span>Security Cockpit</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface hover:bg-surface-container rounded-none transition-colors" href="#inspector">
+<span class="material-symbols-outlined text-[16px]">manage_search</span>
+<span>Tag Inspector</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface hover:bg-surface-container rounded-none transition-colors" href="#wipe">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span>Selective Wipe Matrix</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface hover:bg-surface-container rounded-none transition-colors" href="#ledger">
+<span class="material-symbols-outlined text-[16px]">lock_clock</span>
+<span>SHA-256 Ledger</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface hover:bg-surface-container rounded-none transition-colors" href="#compliance">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span>Compliance & Reports</span>
+</a>
+</div>
+</div>
+<!-- Bottom Attribution Meta -->
+<div class="pt-space-md border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-space-sm px-space-md py-space-sm text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface transition-colors" href="#attribution">
+<span class="material-symbols-outlined text-[16px]">school</span>
+<span>Academic Attribution</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-space-sm text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface transition-colors" href="#settings">
+<span class="material-symbols-outlined text-[16px]">settings</span>
+<span>System Settings</span>
+</a>
+<div class="px-space-md py-space-xs font-code-sm text-code-sm text-outline">
+          v2.4.1-rc3 // Zero-Knowledge
+        </div>
+</div>
+</aside>
+<!-- PRIMARY DASHBOARD CANVAS -->
+<main class="flex-1 p-margin-md lg:p-margin-lg space-y-gutter-lg max-w-[1720px] mx-auto w-full">
+<!-- ZONE 1: TOP TELEMETRY & INTAKE ZONE (TWO-COLUMN BENTO) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Reactive File Intake Chassis (7 Cols) -->
+<div class="lg:col-span-7 bg-surface-container-low border border-outline-variant p-space-lg flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">cloud_upload</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Cryptographic File Intake Zone</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container px-space-sm py-[2px] border border-outline-variant">
+              In-Memory Memory-Safe Sandbox
+            </span>
+</div>
+<!-- Drop Surface Area -->
+<div class="border border-dashed border-primary/60 bg-surface-container-lowest/70 p-space-lg text-center flex flex-col items-center justify-center gap-space-sm transition-all hover:border-primary cursor-pointer group">
+<div class="w-12 h-12 bg-surface-container border border-outline-variant flex items-center justify-center group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary text-[28px]">file_open</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface font-medium">Drag and Drop Document or Media Payload</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Supports Images (RAW, CR2, NEF, JPG, PNG), PDFs, DOCX & Office OpenXML Schemas
+              </p>
+</div>
+<div class="flex items-center gap-space-md mt-1">
+<button class="bg-surface-container-high hover:bg-surface-bright text-on-surface border border-outline-variant px-space-md py-space-xs font-label-md text-label-md transition-colors">
+                Browse File System
+              </button>
+<span class="font-code-sm text-code-sm text-outline">or paste memory stream bytes</span>
+</div>
+</div>
+<!-- Loaded Active Batch Chips -->
+<div class="mt-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Active Batch Buffer (4 of 12 Loaded)</span>
+<span class="font-code-sm text-code-sm text-primary">SHA-256 Checksums Primed</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs">
+<!-- File Chip 1 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm bg-surface-container border border-outline-variant">
+<div class="flex items-center gap-space-xs truncate mr-2">
+<span class="material-symbols-outlined text-error text-[16px]">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm text-on-surface truncate">evidence_exhibit_04.pdf</span>
+</div>
+<span class="font-label-sm text-label-sm text-error shrink-0">CRITICAL LEAK</span>
+</div>
+<!-- File Chip 2 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm bg-surface-container border border-outline-variant">
+<div class="flex items-center gap-space-xs truncate mr-2">
+<span class="material-symbols-outlined text-tertiary text-[16px]">raw_on</span>
+<span class="font-code-sm text-code-sm text-on-surface truncate">field_surveillance_img09.raw</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary shrink-0">GPS ARTIFACTS</span>
+</div>
+<!-- File Chip 3 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm bg-surface-container border border-outline-variant">
+<div class="flex items-center gap-space-xs truncate mr-2">
+<span class="material-symbols-outlined text-primary text-[16px]">description</span>
+<span class="font-code-sm text-code-sm text-on-surface truncate">contract_redacted_v2.docx</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary shrink-0">REVISION TREE</span>
+</div>
+<!-- File Chip 4 -->
+<div class="flex items-center justify-between p-space-xs px-space-sm bg-surface-container border border-outline-variant">
+<div class="flex items-center gap-space-xs truncate mr-2">
+<span class="material-symbols-outlined text-error text-[16px]">picture_as_pdf</span>
+<span class="font-code-sm text-code-sm text-on-surface truncate">executive_brief_q3.pdf</span>
+</div>
+<span class="font-label-sm text-label-sm text-error shrink-0">AUTHOR EXPOSURE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Privacy Exposure Circular Risk Gauge (5 Cols) -->
+<div class="lg:col-span-5 bg-surface-container-low border border-outline-variant p-space-lg flex flex-col justify-between">
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px]">warning</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Batch Entropy & Risk Rating</h2>
+</div>
+<span class="font-label-sm text-label-sm text-error bg-error-container/20 border border-error px-space-sm py-[2px]">
+              ELEVATED VULNERABILITY
+            </span>
+</div>
+<!-- Circular Metric Section -->
+<div class="flex flex-col sm:flex-row items-center gap-space-lg my-space-md">
+<!-- SVG Radial Gauge -->
+<div class="relative w-36 h-36 shrink-0 flex items-center justify-center">
+<svg class="w-36 h-36 -rotate-90" viewbox="0 0 120 120">
+<circle cx="60" cy="60" fill="none" r="50" stroke="#262a33" stroke-width="10"></circle>
+<circle class="amber-glow-box" cx="60" cy="60" fill="none" r="50" stroke="#e79400" stroke-dasharray="314" stroke-dashoffset="50" stroke-linecap="butt" stroke-width="10"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-display text-display font-bold text-tertiary leading-none">84</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">/ 100 RISK</span>
+</div>
+</div>
+<!-- Gauge Qualitative Summary -->
+<div class="space-y-space-xs flex-1">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 bg-tertiary/10 border border-tertiary text-tertiary font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>
+                HIGH PRIVACY EXPOSURE
+              </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Direct geolocation telemetry, persistent hardware serial IDs, and hidden revision drafts detected across the active buffer. Immediate wipe recommended before transit.
+              </p>
+</div>
+</div>
+<!-- Threat Breakdown Progress Stack -->
+<div class="space-y-space-sm pt-space-sm border-t border-outline-variant font-code-sm text-code-sm">
+<div>
+<div class="flex justify-between text-on-surface mb-1">
+<span>GPS Precision Exposure</span>
+<span class="text-error font-semibold">98% CRITICAL (Lat/Long/Alt)</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high overflow-hidden">
+<div class="bg-error h-full" style="width: 98%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-on-surface mb-1">
+<span>Identity & Device Leaks</span>
+<span class="text-tertiary font-semibold">82% HIGH (Serial & OS User)</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high overflow-hidden">
+<div class="bg-tertiary h-full" style="width: 82%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-on-surface mb-1">
+<span>Revision History Depth</span>
+<span class="text-primary font-semibold">72% MODERATE (14 Embedded Drafts)</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high overflow-hidden">
+<div class="bg-primary h-full" style="width: 72%;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ZONE 2: SELECTIVE WIPE MATRIX CONTROLS (CARD WITH CHASSIS) -->
+<section class="bg-surface-container-low border border-outline-variant p-space-lg" id="wipe">
+<!-- Preset Header Strip -->
+<div class="flex flex-col md:flex-row md:items-center justify-between pb-space-md border-b border-outline-variant gap-space-md">
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">tune</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Granular Selective Wipe Matrix</h2>
+<span class="ml-space-sm px-space-sm py-[2px] bg-secondary-container/20 border border-secondary text-secondary font-label-sm text-label-sm font-semibold">
+                Balanced Legal Mode (Active)
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Preserves Copyright & Intellectual Property Licenses • Permanently Strips Identifiable Telemetry & Artifacts
+            </p>
+</div>
+<!-- Preset Switcher & Batch Button -->
+<div class="flex items-center gap-space-sm">
+<div class="flex bg-surface-container-lowest border border-outline-variant p-[2px]">
+<button class="px-space-sm py-1 bg-surface-container-high text-primary font-label-sm text-label-sm border-b-2 border-primary">Balanced Legal</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm">Total Sanitization</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm">Custom Policy</button>
+</div>
+<button class="flex items-center gap-space-xs bg-primary-container hover:bg-primary text-on-primary-container font-label-md text-label-md px-space-md py-[6px] transition-colors cyan-glow-box shrink-0">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span>Apply Scrubbing Rules to Batch</span>
+</button>
+</div>
+</div>
+<!-- Matrix Toggle Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md mt-space-md">
+<!-- Control 1: GPS (Active Scrub) -->
+<div class="p-space-md bg-surface-container border border-outline-variant flex items-start justify-between">
+<div class="space-y-1 pr-2">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Geolocation / GPS Coordinates</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/20 border border-error px-1">STRIPPED</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant">
+                Exif.GPSLatitude, GPSLongitude, Altitude, Dilution of Precision (DOP)
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container peer-checked:after:bg-on-primary after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</label>
+</div>
+<!-- Control 2: Device ID (Active Scrub) -->
+<div class="p-space-md bg-surface-container border border-outline-variant flex items-start justify-between">
+<div class="space-y-1 pr-2">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Device & Hardware Identifiers</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/20 border border-error px-1">STRIPPED</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant">
+                Camera Serial, Lens Model, Firmware Hex String, Network MAC addresses
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container peer-checked:after:bg-on-primary after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</label>
+</div>
+<!-- Control 3: Author Attribution (Active Scrub) -->
+<div class="p-space-md bg-surface-container border border-outline-variant flex items-start justify-between">
+<div class="space-y-1 pr-2">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Author & User Attribution</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/20 border border-error px-1">STRIPPED</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant">
+                Creator, LastModifiedBy, OS System Username, Workstation NetBIOS Name
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container peer-checked:after:bg-on-primary after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</label>
+</div>
+<!-- Control 4: Timestamp (Active Scrub) -->
+<div class="p-space-md bg-surface-container border border-outline-variant flex items-start justify-between">
+<div class="space-y-1 pr-2">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Timestamp & Temporal Metadata</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/20 border border-error px-1">STRIPPED</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant">
+                DateTimeOriginal, SubSecTime, Total Editing Duration, Local Timezone Offset
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container peer-checked:after:bg-on-primary after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</label>
+</div>
+<!-- Control 5: Revisions & Undo Stack (Active Scrub) -->
+<div class="p-space-md bg-surface-container border border-outline-variant flex items-start justify-between">
+<div class="space-y-1 pr-2">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Revision & Orphaned History</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/20 border border-error px-1">STRIPPED</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant">
+                MS Office Track Changes, Undo Stacks, Embedded Preview Thumbnails
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container peer-checked:after:bg-on-primary after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</label>
+</div>
+<!-- Control 6: Copyright Notice (Preserved - Balanced Mode) -->
+<div class="p-space-md bg-surface-container border border-outline-variant flex items-start justify-between border-l-2 border-l-secondary">
+<div class="space-y-1 pr-2">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Copyright & Legal Notice</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/20 border border-secondary px-1">PRESERVED</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant">
+                dc:rights, Copyright © 2025 Enclave Corp, Digital Watermark Fingerprint
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-highest peer-checked:bg-primary-container rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-outline-variant peer-checked:after:bg-on-primary after:border-none after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- ZONE 3: METADATA TAG INSPECTOR TABLE -->
+<section class="bg-surface-container-low border border-outline-variant p-space-lg" id="inspector">
+<div class="flex flex-col md:flex-row md:items-center justify-between pb-space-sm border-b border-outline-variant gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">manage_search</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Metadata Tag Deep Inspector</h2>
+<span class="font-code-sm text-code-sm text-outline-variant px-space-xs">| Payload: evidence_exhibit_04.pdf</span>
+</div>
+<!-- Tabbed Tag Filters -->
+<div class="flex flex-wrap gap-1 bg-surface-container-lowest p-1 border border-outline-variant">
+<button class="px-space-sm py-1 bg-surface-container-high text-primary font-label-sm text-label-sm">All Tags (42)</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm">EXIF Telemetry (18)</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm">GPS Geolocation (6)</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm">XMP / IPTC (11)</button>
+<button class="px-space-sm py-1 text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm">Doc Revision & System (7)</button>
+</div>
+</div>
+<!-- Telemetry Table -->
+<div class="overflow-x-auto terminal-scrollbar mt-space-md">
+<table class="w-full text-left border-collapse font-code-sm text-code-sm">
+<thead>
+<tr class="bg-surface-container-lowest border-y border-outline-variant text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-space-sm px-space-md">Property Name</th>
+<th class="py-space-sm px-space-md">Category</th>
+<th class="py-space-sm px-space-md">Raw Extracted Value</th>
+<th class="py-space-sm px-space-md">Sanitized Output</th>
+<th class="py-space-sm px-space-md">Threat Level</th>
+<th class="py-space-sm px-space-md text-right">Wipe Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/40">
+<!-- Row 1: GPS -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="py-space-sm px-space-md font-semibold text-primary">GPSLatitude</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">Exif.GPSInfo</td>
+<td class="py-space-sm px-space-md font-mono text-error">37°46'29.8"N 122°25'09.6"W</td>
+<td class="py-space-sm px-space-md text-secondary font-mono">[PURGED & ZEROED]</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-error bg-error-container/20 border border-error px-space-xs py-[1px] font-label-sm text-label-sm">
+                    ● CRITICAL
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right text-secondary">SCRUBBED</td>
+</tr>
+<!-- Row 2: Camera Serial -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="py-space-sm px-space-md font-semibold text-primary">CameraSerialNumber</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">Exif.Photo</td>
+<td class="py-space-sm px-space-md font-mono text-tertiary">S/N #9482104-NIKON-Z9</td>
+<td class="py-space-sm px-space-md text-secondary font-mono">[REDACTED_HASH_NULL]</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-tertiary bg-tertiary/10 border border-tertiary px-space-xs py-[1px] font-label-sm text-label-sm">
+                    ● HIGH
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right text-secondary">SCRUBBED</td>
+</tr>
+<!-- Row 3: Creator -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="py-space-sm px-space-md font-semibold text-primary">Creator / Author</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">DublinCore:creator</td>
+<td class="py-space-sm px-space-md font-mono text-tertiary">Dr. Alexander Vance <avance@mru.edu.in></td>
+<td class="py-space-sm px-space-md text-secondary font-mono">[ANONYMIZED_OPERATOR]</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-tertiary bg-tertiary/10 border border-tertiary px-space-xs py-[1px] font-label-sm text-label-sm">
+                    ● HIGH
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right text-secondary">SCRUBBED</td>
+</tr>
+<!-- Row 4: Software -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="py-space-sm px-space-md font-semibold text-primary">Software</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">Exif.Image</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface">Adobe Photoshop 2024 (Windows NT 10.0)</td>
+<td class="py-space-sm px-space-md text-secondary font-mono">[STRIPPED]</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-primary bg-primary/10 border border-primary px-space-xs py-[1px] font-label-sm text-label-sm">
+                    ● MEDIUM
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right text-secondary">SCRUBBED</td>
+</tr>
+<!-- Row 5: Copyright (Preserved) -->
+<tr class="hover:bg-primary/5 transition-colors group bg-surface-container-lowest/30">
+<td class="py-space-sm px-space-md font-semibold text-secondary">dc:rights</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">XMP.Rights</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface">Copyright © 2025 MetaShield Lab</td>
+<td class="py-space-sm px-space-md text-secondary font-mono">PRESERVED [Balanced Mode]</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-secondary bg-secondary-container/20 border border-secondary px-space-xs py-[1px] font-label-sm text-label-sm">
+                    ✓ SAFE
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right text-on-surface-variant">RETAINED</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- ZONE 4: LIVE IMMUTABLE CRYPTOGRAPHIC AUDIT LEDGER -->
+<section class="bg-surface-container-low border border-outline-variant p-space-lg" id="ledger">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-sm border-b border-outline-variant gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Live SHA-256 Ledger (Chained Blocks) • Zero-Knowledge Verifier</h2>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+            Enclave Merkle Root: <span class="font-mono text-primary">0x9f1a...480b</span>
+</div>
+</div>
+<!-- Ledger Log Table -->
+<div class="overflow-x-auto terminal-scrollbar mt-space-md">
+<table class="w-full text-left border-collapse font-code-sm text-code-sm">
+<thead>
+<tr class="bg-surface-container-lowest border-y border-outline-variant text-on-surface-variant font-label-sm text-label-sm uppercase">
+<th class="py-space-sm px-space-md">Block #</th>
+<th class="py-space-sm px-space-md">Timestamp</th>
+<th class="py-space-sm px-space-md">File Target</th>
+<th class="py-space-sm px-space-md">Pre-Scrub Hash (SHA-256)</th>
+<th class="py-space-sm px-space-md">Post-Scrub Hash (SHA-256)</th>
+<th class="py-space-sm px-space-md">Verification Status</th>
+<th class="py-space-sm px-space-md text-right">Proof Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/40">
+<!-- Ledger Row 1 -->
+<tr class="hover:bg-primary/5 transition-colors font-mono">
+<td class="py-space-sm px-space-md text-primary">#108,492</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">14:28:11.042 UTC</td>
+<td class="py-space-sm px-space-md text-on-surface">evidence_exhibit_04.pdf</td>
+<td class="py-space-sm px-space-md text-tertiary">e3b0c442...8b4c91a</td>
+<td class="py-space-sm px-space-md text-secondary">7d865e95...9b3c410</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-secondary bg-secondary-container/20 border border-secondary px-space-xs py-[1px] font-label-sm text-label-sm font-sans">
+                    ✓ Verified In Enclave
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right font-sans">
+<button class="text-primary hover:underline font-label-sm text-label-sm">Download ZK-Proof</button>
+</td>
+</tr>
+<!-- Ledger Row 2 -->
+<tr class="hover:bg-primary/5 transition-colors font-mono">
+<td class="py-space-sm px-space-md text-primary">#108,491</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">14:27:54.891 UTC</td>
+<td class="py-space-sm px-space-md text-on-surface">field_surveillance_img09.raw</td>
+<td class="py-space-sm px-space-md text-tertiary">a14f5298...7ca110f</td>
+<td class="py-space-sm px-space-md text-secondary">3f2a8901...4d89a22</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-secondary bg-secondary-container/20 border border-secondary px-space-xs py-[1px] font-label-sm text-label-sm font-sans">
+                    ✓ Verified In Enclave
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right font-sans">
+<button class="text-primary hover:underline font-label-sm text-label-sm">Download ZK-Proof</button>
+</td>
+</tr>
+<!-- Ledger Row 3 -->
+<tr class="hover:bg-primary/5 transition-colors font-mono">
+<td class="py-space-sm px-space-md text-primary">#108,490</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">14:26:19.330 UTC</td>
+<td class="py-space-sm px-space-md text-on-surface">contract_redacted_v2.docx</td>
+<td class="py-space-sm px-space-md text-tertiary">b882410a...19ef47d</td>
+<td class="py-space-sm px-space-md text-secondary">9a4401bb...02dff51</td>
+<td class="py-space-sm px-space-md">
+<span class="inline-flex items-center gap-1 text-secondary bg-secondary-container/20 border border-secondary px-space-xs py-[1px] font-label-sm text-label-sm font-sans">
+                    ✓ Verified In Enclave
+                  </span>
+</td>
+<td class="py-space-sm px-space-md text-right font-sans">
+<button class="text-primary hover:underline font-label-sm text-label-sm">Download ZK-Proof</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Bottom Compliance Bar -->
+<div class="mt-space-md pt-space-md border-t border-outline-variant flex flex-col md:flex-row items-center justify-between gap-space-sm bg-surface-container-lowest p-space-md" id="compliance">
+<div class="flex flex-wrap items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+              GDPR Art. 17 Certified (Right to Erasure)
+            </span>
+<span class="text-outline">•</span>
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+              CCPA § 1798.105 Compliant
+            </span>
+<span class="text-outline">•</span>
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+              HIPAA Safe Harbor De-Identification
+            </span>
+</div>
+<button class="flex items-center gap-space-xs bg-surface-container-high hover:bg-surface-bright text-primary border border-primary font-label-sm text-label-sm px-space-md py-space-xs transition-colors shrink-0">
+<span class="material-symbols-outlined text-[15px]">download</span>
+<span>Download Cryptographic Certificate Bundle (.p7b)</span>
+</button>
+</div>
+</section>
+<!-- ACADEMIC CREDIT FOOTER STRIP -->
+<footer class="p-space-md bg-surface-container-lowest border border-outline-variant flex flex-col sm:flex-row items-center justify-between text-on-surface-variant font-code-sm text-code-sm gap-space-sm" id="attribution">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">school</span>
+<span>MetaShield Project developed at <strong class="text-on-surface font-medium">Malla Reddy University</strong></span>
+<span class="text-outline">|</span>
+<span>Engineers: <strong class="text-primary">Charan Konda</strong> & <strong class="text-primary">J. Naga Phani</strong> (Batch CS BETA - 17)</span>
+</div>
+<div class="font-label-sm text-label-sm text-outline flex items-center gap-space-xs">
+<span>Zero-Knowledge Hardware-Enclave Attestation</span>
+<span>•</span>
+<span>2025</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

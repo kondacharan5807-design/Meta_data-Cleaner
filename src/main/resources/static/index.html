@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MetaShield — Minimalist Privacy File Sanitizer</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- Light Mode Minimalist CSS -->
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+  <!-- Atmospheric Pastel Gradient Background Orbs -->
+  <div class="ambient-background">
+    <div class="gradient-orb orb-cerulean"></div>
+    <div class="gradient-orb orb-violet"></div>
+    <div class="gradient-orb orb-mint"></div>
+  </div>
+
+  <!-- Frosted Glass Navigation Bar -->
+  <header class="header-glass">
+    <div class="brand-wrapper">
+      <div class="brand-icon">🛡️</div>
+      <div class="brand-text">
+        <h1>Meta<span>Shield</span></h1>
+        <p>Intelligent Privacy &amp; Metadata Sanitizer</p>
+      </div>
+    </div>
+
+    <!-- Academic Ownership Attribution -->
+    <div class="academic-badge">
+      <span class="dot"></span>
+      <span><strong>Malla Reddy University</strong></span>
+      <span>•</span>
+      <span>Architects: <strong>Charan Konda (2511CS040113)</strong> &amp; <strong>J. Naga Phani (2511CS040132)</strong></span>
+      <span>•</span>
+      <span style="font-family: var(--font-mono); color: var(--accent-violet);">CS BETA – 17</span>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Hero Title & Subtitle -->
+    <div class="hero-headline">
+      <h2>Sanitize digital files with <span>effortless privacy.</span></h2>
+      <p>Instantly strip embedded GPS coordinates, camera serials, author credentials, and hidden revision histories before sharing or publishing.</p>
+    </div>
+
+    <!-- Main Glassmorphic 3-Step Container Card -->
+    <section class="glass-card">
+
+      <!-- ================================================================= -->
+      <!-- THE METASHIELD ENCLAVE UPLOAD & ANIMATION VIEWPORT                -->
+      <!-- ================================================================= -->
+      <div class="dropzone-container" id="dropzone">
+        <input type="file" id="fileInput" style="display: none;" accept=".jpg,.jpeg,.png,.webp,.tiff,.pdf,.docx"/>
+        
+        <div class="dropzone-inner" id="dropzoneInner">
+
+          <!-- 1. IDLE STATE: Exactly matches Reference Image 2 -->
+          <div class="dropzone-idle-view" id="dropzoneIdleView">
+            <div class="dropzone-icon-bubble">
+              📄
+            </div>
+            <h3 class="dropzone-title">Drop files here to sanitize</h3>
+            <p class="dropzone-desc">Drag and drop any image, PDF, or Word document. Balanced Legal Mode automatically secures your privacy while preserving copyright attribution.</p>
+            <div class="dropzone-chips">
+              <span class="format-chip">JPEG / EXIF</span>
+              <span class="format-chip">PNG / XMP</span>
+              <span class="format-chip">PDF Documents</span>
+              <span class="format-chip">Word DOCX</span>
+              <span class="format-chip">GPS Eradication</span>
+              <span class="format-chip">Rights Preserved</span>
+            </div>
+          </div>
+
+          <!-- 2. ANIMATED SANITIZATION STAGE: Strictly Contained In Viewport -->
+          <div class="sanitization-stage" id="sanitizationStage">
+            
+            <!-- Stage Top Status Pill & Filename Tag -->
+            <div class="stage-status-bar">
+              <div class="stage-status-pill" id="stageStatusPill">
+                <span class="status-pulse-dot" id="statusDot"></span>
+                <span class="status-text" id="stageStatusText">1. File Ingested</span>
+              </div>
+              <div class="stage-filename-tag" id="stageFilenameTag">file.ext</div>
+            </div>
+
+            <!-- Stage Arena: File Document (Left) & Metadata/Dustbin (Right) -->
+            <div class="stage-arena" id="stageArena">
+
+              <!-- Left: File Document Card -->
+              <div class="file-card-wrapper" id="fileCardWrapper">
+                <div class="file-document-card" id="fileDocumentCard">
+                  <!-- Dog-ear folded corner with blue accent (matching Reference Image 1) -->
+                  <div class="dog-ear-corner">
+                    <div class="dog-ear-fold"></div>
+                  </div>
+                  <!-- Laser scanning beam -->
+                  <div class="scan-beam" id="scanBeam"></div>
+                  <!-- Format badge (e.g. JPG, PDF, DOCX) -->
+                  <div class="card-format-badge" id="cardFormatBadge">DOC</div>
+                  <!-- Skeleton content lines -->
+                  <div class="doc-skeleton-lines">
+                    <div class="skeleton-line line-1"></div>
+                    <div class="skeleton-line line-2"></div>
+                    <div class="skeleton-line line-3"></div>
+                    <div class="skeleton-line line-4"></div>
+                  </div>
+                  <!-- Shield Verified Badge (Pops up in State 5) -->
+                  <div class="shield-verified-badge" id="shieldVerifiedBadge">
+                    <svg viewBox="0 0 24 24" class="shield-svg" fill="none">
+                      <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" fill="#10b981"/>
+                      <path d="M9 12l2 2 4-4" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Metadata Tags & Disposal Workspace -->
+              <div class="action-workspace" id="actionWorkspace">
+                
+                <!-- Metadata Pill Cluster (State 2 & 3: Extracted tags emerging) -->
+                <div class="metadata-tag-cluster" id="metadataTagCluster">
+                  <!-- Populated dynamically based on real file scan -->
+                </div>
+
+                <!-- Crumpled Metadata Paper Ball (State 4: Crumbles & Throws) -->
+                <div class="crumpled-ball-container" id="crumpledBallContainer">
+                  <!-- Motion Speed Lines (State 4 throw trajectory) -->
+                  <div class="motion-trail-arcs" id="motionTrailArcs">
+                    <svg viewBox="0 0 160 80" class="trail-svg">
+                      <path d="M10,65 Q75,5 145,45" stroke="rgba(147, 51, 234, 0.45)" stroke-width="2.5" stroke-dasharray="5 5" fill="none"/>
+                      <path d="M25,75 Q85,15 155,55" stroke="rgba(2, 132, 199, 0.45)" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
+                    </svg>
+                  </div>
+
+                  <!-- High-fidelity Crumpled Paper Ball SVG with embedded colored tags -->
+                  <div class="paper-ball-mesh">
+                    <svg viewBox="0 0 120 120" class="crumpled-paper-svg">
+                      <defs>
+                        <radialGradient id="ballShading" cx="40%" cy="35%" r="60%">
+                          <stop offset="0%" stop-color="#ffffff"/>
+                          <stop offset="60%" stop-color="#f1f5f9"/>
+                          <stop offset="100%" stop-color="#cbd5e1"/>
+                        </radialGradient>
+                        <filter id="crinkleShadow" x="-10%" y="-10%" width="130%" height="130%">
+                          <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="rgba(15,23,42,0.15)"/>
+                        </filter>
+                      </defs>
+                      <g filter="url(#crinkleShadow)">
+                        <!-- Main crumpled body contour -->
+                        <polygon points="60,8 82,16 98,32 110,54 112,78 98,102 76,112 48,110 26,98 12,74 10,48 24,24 44,12" fill="url(#ballShading)" stroke="#94a3b8" stroke-width="1.2"/>
+                        <!-- Creases & Facets -->
+                        <polygon points="60,8 72,36 44,30" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <polygon points="72,36 98,32 86,58" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <polygon points="86,58 110,54 94,76" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <polygon points="94,76 112,78 98,102 78,88" fill="#cbd5e1" opacity="0.6"/>
+                        <polygon points="78,88 76,112 52,94" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <polygon points="52,94 48,110 26,98 38,76" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <polygon points="38,76 12,74 22,52" fill="#cbd5e1" opacity="0.5"/>
+                        <polygon points="22,52 10,48 24,24 42,40" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <polygon points="42,40 44,12 60,8 54,38" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <!-- Center creases -->
+                        <polygon points="54,38 72,36 68,64 48,58" fill="#f8fafc" stroke="#94a3b8" stroke-width="0.8"/>
+                        <polygon points="68,64 86,58 78,88 56,76" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="0.8"/>
+                        <polygon points="48,58 68,64 56,76 38,76 42,40" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+
+                        <!-- Embedded Folded Metadata Tags (Matching Reference Image 1 Panel 3) -->
+                        <!-- GPS light-blue strip -->
+                        <g transform="rotate(-15 65 48)">
+                          <rect x="52" y="44" width="28" height="10" rx="3" fill="#e0f2fe" stroke="#38bdf8" stroke-width="0.8"/>
+                          <text x="56" y="51.5" font-family="'Inter', sans-serif" font-size="5.5" font-weight="700" fill="#0284c7">GPS</text>
+                        </g>
+                        <!-- CAMERA light-purple strip -->
+                        <g transform="rotate(22 36 68)">
+                          <rect x="22" y="63" width="32" height="10" rx="3" fill="#f3e8ff" stroke="#c084fc" stroke-width="0.8"/>
+                          <text x="25" y="70.5" font-family="'Inter', sans-serif" font-size="5.5" font-weight="700" fill="#7e22ce">CAMERA</text>
+                        </g>
+                        <!-- AUTHOR light-green strip -->
+                        <g transform="rotate(-30 76 76)">
+                          <rect x="64" y="72" width="30" height="9" rx="3" fill="#dcfce7" stroke="#4ade80" stroke-width="0.8"/>
+                          <text x="67" y="78.5" font-family="'Inter', sans-serif" font-size="5" font-weight="700" fill="#15803d">AUTHOR</text>
+                        </g>
+                        <!-- EXIF / DATES yellow strip -->
+                        <g transform="rotate(10 74 28)">
+                          <rect x="62" y="24" width="24" height="8" rx="2.5" fill="#fef9c3" stroke="#facc15" stroke-width="0.8"/>
+                          <text x="65" y="30" font-family="'Inter', sans-serif" font-size="5" font-weight="700" fill="#a16207">EXIF</text>
+                        </g>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Minimalist Metallic Dustbin (Panel 4) -->
+                <div class="dustbin-container" id="dustbinContainer">
+                  <div class="dustbin-lid" id="dustbinLid">
+                    <div class="lid-handle"></div>
+                    <div class="lid-cap"></div>
+                  </div>
+                  <div class="dustbin-body">
+                    <div class="dustbin-rim"></div>
+                    <div class="dustbin-grooves">
+                      <div class="bin-groove"></div>
+                      <div class="bin-groove"></div>
+                      <div class="bin-groove"></div>
+                      <div class="bin-groove"></div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Stage Result Tray (State 5: Sanitized Result) -->
+            <div class="stage-result-tray" id="stageResultTray">
+              <div class="result-stats-row">
+                <span class="res-badge">✓ Zero Residual Telemetry</span>
+                <span class="res-sep">•</span>
+                <span id="stageResSize">0 KB</span>
+                <span class="res-sep">•</span>
+                <span class="res-hash">SHA-256: <strong id="stageResHash">Verified</strong></span>
+              </div>
+              <div class="result-actions-row">
+                <button class="btn-primary-massive stage-btn-download" id="stageBtnDownload">
+                  <span>⬇ Download Cleaned File</span>
+                </button>
+                <div class="result-sub-actions">
+                  <a href="javascript:void(0)" class="link-action" onclick="resetToUpload()">+ Sanitize Another File</a>
+                  <span style="color: var(--text-dim);">•</span>
+                  <a id="stageLinkCert" href="#" target="_blank" class="link-action">🛡️ View Compliance Certificate ↗</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stage Error Tray (If failure occurs) -->
+            <div class="stage-error-tray" id="stageErrorTray" style="display: none;">
+              <div class="error-icon-bubble">⚠️</div>
+              <h4 class="error-title">Sanitization Encountered an Issue</h4>
+              <p class="error-msg" id="stageErrorMsg">Unable to sanitize file stream.</p>
+              <button class="btn-primary-massive btn-retry" onclick="resetToUpload()">Try Again</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VIEW 3: Simple & Airy Audit Ledger Table                            -->
+    <!-- =================================================================== -->
+    <section class="ledger-section">
+      <div class="ledger-header">
+        <h3>Session Activity &amp; Audit Ledger</h3>
+        <span class="ledger-count" id="ledgerCount">0 records</span>
+      </div>
+
+      <div class="table-glass">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="ledgerTableBody">
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 32px;">
+                No files processed in this session yet. Drop a file above to begin.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Clean Academic Footer -->
+  <footer class="footer-bar">
+    <div>
+      MetaShield Privacy Framework • Engineered by <strong>Charan Konda (2511CS040113)</strong> &amp; <strong>J. Naga Phani (2511CS040132)</strong> (Batch CS BETA – 17)
+    </div>
+    <div style="margin-top: 4px; color: var(--text-dim);">
+      Department of Computer Science &amp; Engineering • Malla Reddy University, Hyderabad
+    </div>
+  </footer>
+
+  <!-- Client Application Script -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
